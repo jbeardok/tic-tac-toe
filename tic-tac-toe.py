@@ -31,23 +31,23 @@ def player_choice():
         computer = 'X'
     return human, computer
 
-def human_move(human, computer):
+def human_move(human):
     row = int(input("Enter the row: "))
     column = int(input("Enter the cell (column): "))
     if row < 0  or row > 2:
         int(print("Row: Number is out of range. Enter an integer 0-2: "))
     if column < 0 or column > 2:
         int(print("Cell (Column): Number is out of range. Enter an integer 0-2: "))
-    while board[row][column] == computer:
+    while board[row][column] != '-':
         row = int(input("Cell is taken. Enter the row: "))
         column = int(input("Enter the cell (column): "))
     board[row][column] = human
 
 
-def computer_move(human, computer):
+def computer_move(computer):
     row = random.randint(0,2)
     column = random.randint(0,2)
-    while board[row][column] == human:
+    while board[row][column] != '-':
         row = random.randint(0,2)
         column = random.randint(0,2)
     board[row][column] = computer
@@ -98,43 +98,43 @@ def boardFull():
         return True
 
 title()
-show_board()
 human, computer = player_choice()
+show_board()
 
 xwin = False
 owin = False
-full = False
+fullboard = False
 
-while owin != True or xwin != True or full != True:
-    # if owin == True or xwin == True or full == True:
+while owin != True or xwin != True or fullboard != True:
+    # if owin == True or xwin == True or fullboard == True:
     #     break
     if human == 'X':
         # IF PLAYER IS X, COMPUTER IS O
-        human_move(human, computer)
+        human_move(human)
         show_board()
         xwin = checkXWin()
-        full = boardFull()
-        if xwin == True or full == True:
+        fullboard = boardFull()
+        if xwin == True or fullboard == True:
             break
-        computer_move(human, computer)
+        computer_move(computer)
         show_board()
         owin = checkOWin()
-        full = boardFull()
-        if owin == True or full ==True:
+        fullboard = boardFull()
+        if owin == True or fullboard ==True:
             break
     else:
         # IF PLAYER IS O, COMPUTER IS X
-        computer_move(human, computer)
+        computer_move(computer)
         show_board()
         xwin = checkXWin()
-        full = boardFull()
-        if xwin == True or full == True:
+        fullboard = boardFull()
+        if xwin == True or fullboard == True:
             break
-        human_move(human, computer)
+        human_move(human)
         show_board()
         owin = checkOWin()
-        full = boardFull()
-        if owin == True or full == True:
+        fullboard = boardFull()
+        if owin == True or fullboard == True:
             break
 
 if owin == True:
