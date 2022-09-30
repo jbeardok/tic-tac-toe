@@ -48,21 +48,55 @@ def checkXWin():
         else:
             continue
 
+def checkOWin():
+    for row in range(3):
+        if board[row][0] == 'O' and board[row][1] == 'O' and board[row][2] == 'O':
+            return True
+        else:
+            continue
+    for column in range(3):
+        if board[0][column] == 'O' and board[1][column] == 'O' and board[2][column] == 'O':
+            return True
+        else:
+            continue
+
+def boardFull():
+    full_cells = 0
+    for row in board:
+        for cell in row:
+            if cell == 'X' or cell == 'O':
+                full_cells += 1
+    if full_cells == 9:
+        return True
+
 title()
 show_board()
 human, computer = player_choice()
 
-win = False
+xwin = False
+owin = False
+full = False
+
 for i in range(9):
-    if win == True:
+    if owin == True or xwin == True or full == True:
         break
+    if human == 'X':
+        human_move(human, computer)
+        show_board()
+        xwin = checkXWin()
+        full = boardFull()
     else:
         human_move(human, computer)
         show_board()
-        win = checkXWin()
+        full = boardFull()
 
-print("X WINS THIS GAME!")
-
+if owin == True:
+    print("O Wins this game!")
+elif xwin == True:
+    print("X Wins this game!")
+else:
+    print("Draw!")
+    
 # def computer_move():
 #     row = random.randint(0,3)
 #     column = random.randint(0,3)
