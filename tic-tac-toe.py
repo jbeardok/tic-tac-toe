@@ -35,9 +35,9 @@ def human_move(human):
     row = int(input("Enter the row: "))
     column = int(input("Enter the cell (column): "))
     if row < 0  or row > 2:
-        int(print("Row: Number is out of range. Enter an integer 0-2: "))
+        row = int(input("Row: Number is out of range. Enter an integer 0-2: "))
     if column < 0 or column > 2:
-        int(print("Cell (Column): Number is out of range. Enter an integer 0-2: "))
+        column = int(input("Cell (Column): Number is out of range. Enter an integer 0-2: "))
     while board[row][column] != '-':
         row = int(input("Cell is taken. Enter the row: "))
         column = int(input("Enter the cell (column): "))
@@ -106,8 +106,6 @@ owin = False
 fullboard = False
 
 while owin != True or xwin != True or fullboard != True:
-    # if owin == True or xwin == True or fullboard == True:
-    #     break
     if human == 'X':
         # IF PLAYER IS X, COMPUTER IS O
         human_move(human)
