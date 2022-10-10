@@ -1,7 +1,5 @@
 import random
 
-board = [['-', '-', '-'], ['-', '-', '-'], ['-', '-', '-']]
-
 def title():
     banner = '''
     |///////////////////////////////////////////////////|
@@ -15,23 +13,24 @@ def title():
     print(banner)
     print("Choose values between 0-2.\nFor rows: 0 = top, 1 = middle, 2 = bottom\nFor columns: 0 = left, 1 = middle, 2 = right\n")
 
-def show_board():
+def show_board(board):
     for row in board:
         print(row)
     print()
 
 def player_choice():
-    human = input("Will you be X or O? ")
-    human = human.upper()
-    computer = ''
-    print("You will be " + human)
-    if human == 'X':
-        computer = 'O'
+    num_players = int(input("1 or 2 player game? Enter a number: "))
+    player1 = input("Will you be X or O? ")
+    player1 = player1.upper()
+    player2 = ''
+    if player1 == 'X':
+        player2 = 'O'
     else:
-        computer = 'X'
-    return human, computer
+        player2 = 'X'
+    print("Player 1 will be " + player1 + ", player 2 will be " + player2 + ".")
+    return num_players, player1, player2
 
-def human_move(human):
+def human_move(board, human):
     row = int(input("Enter the row: "))
     column = int(input("Enter the cell (column): "))
     if row < 0  or row > 2:
@@ -43,8 +42,7 @@ def human_move(human):
         column = int(input("Enter the cell (column): "))
     board[row][column] = human
 
-
-def computer_move(computer):
+def computer_move(board, computer):
     row = random.randint(0,2)
     column = random.randint(0,2)
     while board[row][column] != '-':
@@ -52,7 +50,7 @@ def computer_move(computer):
         column = random.randint(0,2)
     board[row][column] = computer
 
-def checkXWin():
+def checkXWin(board):
     for row in range(3):
         if board[row][0] == 'X' and board[row][1] == 'X' and board[row][2] == 'X':
             return True
@@ -70,7 +68,7 @@ def checkXWin():
     else:
         return False
 
-def checkOWin():
+def checkOWin(board):
     for row in range(3):
         if board[row][0] == 'O' and board[row][1] == 'O' and board[row][2] == 'O':
             return True
@@ -88,7 +86,7 @@ def checkOWin():
     else:
         return False
 
-def boardFull():
+def boardFull(board):
     full_cells = 0
     for row in board:
         for cell in row:
@@ -97,48 +95,88 @@ def boardFull():
     if full_cells == 9:
         return True
 
-title()
-human, computer = player_choice()
-show_board()
+def main():
+    board = [['-', '-', '-'], ['-', '-', '-'], ['-', '-', '-']]
 
-xwin = False
-owin = False
-fullboard = False
+    title()
+    num_players, player1, player2 = player_choice()
+    show_board(board)
 
-while owin != True or xwin != True or fullboard != True:
-    if human == 'X':
-        # IF PLAYER IS X, COMPUTER IS O
-        human_move(human)
-        show_board()
-        xwin = checkXWin()
-        fullboard = boardFull()
-        if xwin == True or fullboard == True:
-            break
-        computer_move(computer)
-        show_board()
-        owin = checkOWin()
-        fullboard = boardFull()
-        if owin == True or fullboard ==True:
-            break
+    xwin = False
+    owin = False
+    fullboard = False
+    # Player1 is a human, player2 is random
+    if num_players == 1:
+        while owin != True or xwin != True or fullboard != True:
+            if player1 == 'X':
+                # IF PLAYER IS X, COMPUTER IS O
+                human_move(board, player1)
+                show_board(board)
+                xwin = checkXWin(board)
+                fullboard = boardFull(board)
+                if xwin == True or fullboard == True:
+                    break
+                computer_move(board, player2)
+                show_board(board)
+                owin = checkOWin(board)
+                fullboard = boardFull(board)
+                if owin == True or fullboard ==True:
+                    break
+            else:
+                # IF PLAYER IS O, COMPUTER IS X
+                computer_move(board, player2)
+                show_board(board)
+                xwin = checkXWin(board)
+                fullboard = boardFull(board)
+                if xwin == True or fullboard == True:
+                    break
+                human_move(board, player1)
+                show_board(board)
+                owin = checkOWin(board)
+                fullboard = boardFull(board)
+                if owin == True or fullboard == True:
+                    break
     else:
-        # IF PLAYER IS O, COMPUTER IS X
-        computer_move(computer)
-        show_board()
-        xwin = checkXWin()
-        fullboard = boardFull()
-        if xwin == True or fullboard == True:
-            break
-        human_move(human)
-        show_board()
-        owin = checkOWin()
-        fullboard = boardFull()
-        if owin == True or fullboard == True:
-            break
-
-if owin == True:
-    print("O Wins this game!")
-elif xwin == True:
-    print("X Wins this game!")
-else:
-    print("Draw!")
+        # Both players are human
+        while owin != True or xwin != True or fullboard != True:
+            if player1 == 'X':
+                # IF PLAYER1 IS X, Player2 IS O
+                print("Player 1's turn!")
+                human_move(board, player1)
+                show_board(board)
+                xwin = checkXWin(board)
+                fullboard = boardFull(board)
+                if xwin == True or fullboard == True:
+                    break
+                print("Player 2's turn!")
+                human_move(board, player2)
+                show_board(board)
+                owin = checkOWin(board)
+                fullboard = boardFull(board)
+                if owin == True or fullboard ==True:
+                    break
+            else:
+                # IF PLAYER IS O, COMPUTER IS X
+                print("Player 2's turn!")
+                human_move(board, player2)
+                show_board(board)
+                xwin = checkXWin(board)
+                fullboard = boardFull(board)
+                if xwin == True or fullboard == True:
+                    break
+                print("Player 1's turn!")
+                human_move(board, player1)
+                show_board(board)
+                owin = checkOWin(board)
+                fullboard = boardFull(board)
+                if owin == True or fullboard == True:
+                    break
         
+    if owin == True:
+        print("O Wins this game!")
+    elif xwin == True:
+        print("X Wins this game!")
+    else:
+        print("Draw!")
+
+main()
