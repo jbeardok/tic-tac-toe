@@ -1,5 +1,6 @@
 from random import *
-
+from tkinter import *
+from tkinter import ttk
 
 class TicTacToe:
     def __init__(self):
@@ -47,6 +48,7 @@ class TicTacToe:
             match = self.check_match(['X', 'O'])
             if match: print('win'); break
             else: print('no match')
+        self.display_board()
         if not match: print('board is full')
 
 
